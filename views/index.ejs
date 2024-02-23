@@ -29,63 +29,68 @@
     <!-- MAIN -->
     <main class="vh-md-100">
         <section id="mainSection" class="mt-5 pt-5 container">
-            <h1 class="text-center my-3">Books reviewed</h1>
-            <div class="row">
-
-                <!-- SORT SECTION -->
-                <div class="col-12 col-md-2 p-md-0">
-                    <p class="pb-1 m-0">Sort By: </p>
-                    <form class="d-flex align-items-center input-group" action="/sort" method="post">
-                        <select name="sort" id="sort-option" class="form-select form-select-sm border border-success"
-                            aria-label="Large select example">
-                            <option value="title">Title</option>
-                            <option value="author">Author</option>
-                            <option value="rating">Rating</option>
-                        </select>
-                        <input class="btn btn-sm btn-outline-success" type="submit" value="Go">
-                    </form>
-                </div>
-                <!-- END SORT SECTION -->
-            </div>
-
-            <!-- BOOKS SECTION -->
-            <% locals.books.forEach(book => { %>
+            <% if (locals.books) { %>
+                <h1 class="text-center my-3">Books reviewed</h1>
                 <div class="row">
-                    
-                    <%#-- BOOK'S IMG --%>
-                    <div class="col-12 col-md-4 mt-5 p-md-0 d-flex justify-content-center justify-content-md-start">
-                        <img src="https://covers.openlibrary.org/b/isbn/<%=book.isbn%>-L.jpg" class="img-fluid w-md-100" alt="<%= book.title %>" height="200" width="200">
-                    </div>
-                    <%#-- END BOOK'S IMG --%>
-    
-                    <%#-- BOOKS INFO --%>
-                    <div class="col-12 col-md-8 mt-5 p-md-0">
-                        <h2 class="mb-3"><%= book.title %></h2>
-                        <h3 class="mb-3">
-                            <span class="info">Author:</span> <%= book.author %>
-                        </h3>
-                        <h4 class="mb-2 info">Review:</h4>
-                        <p>
-                            <%= book.review %>
-                        </p>
-    
-                        <%#-- RATING --%>
-                        <p>
-                            <% for (let i = 0; i < book.rating; i++ ){ %>
-                            <span class="fa fa-star" style="color: orange;"></span>
-                            <% } %>
-                            <% for (let i = 0; i < 5 - book.rating; i++ ){ %>
-                                <span class="fa fa-star"></span>
-                            <% } %>
-                        </p>
-                        <%#-- END RATING --%>
-                    </div>
-                    <%#-- END BOOKS INFO --%>
-                </div>
-            <%#-- END BOOKS SECTION --%>
 
-            <hr>
-            <% }); %>
+                    <!-- SORT SECTION -->
+                    <div class="col-12 col-md-2 p-md-0">
+                        <p class="pb-1 m-0">Sort By: </p>
+                        <form class="d-flex align-items-center input-group" action="/sort" method="post">
+                            <select name="sort" id="sort-option" class="form-select form-select-sm border border-success"
+                                aria-label="Large select example">
+                                <option value="title">Title</option>
+                                <option value="author">Author</option>
+                                <option value="rating">Rating</option>
+                            </select>
+                            <input class="btn btn-sm btn-outline-success" type="submit" value="Go">
+                        </form>
+                    </div>
+                    <!-- END SORT SECTION -->
+                </div>
+
+                <!-- BOOKS SECTION -->
+                <% locals.books.forEach(book => { %>
+                    <div class="row">
+                        
+                        <%#-- BOOK'S IMG --%>
+                        <div class="col-12 col-md-4 mt-5 p-md-0 d-flex justify-content-center justify-content-md-start">
+                            <img src="https://covers.openlibrary.org/b/isbn/<%=book.isbn%>-L.jpg" class="img-fluid w-md-100" alt="<%= book.title %>" height="200" width="200">
+                        </div>
+                        <%#-- END BOOK'S IMG --%>
+        
+                        <%#-- BOOKS INFO --%>
+                        <div class="col-12 col-md-8 mt-5 p-md-0">
+                            <h2 class="mb-3"><%= book.title %></h2>
+                            <h3 class="mb-3">
+                                <span class="info">Author:</span> <%= book.author %>
+                            </h3>
+                            <h4 class="mb-2 info">Review:</h4>
+                            <p>
+                                <%= book.review %>
+                            </p>
+        
+                            <%#-- RATING --%>
+                            <p>
+                                <% for (let i = 0; i < book.rating; i++ ){ %>
+                                <span class="fa fa-star" style="color: orange;"></span>
+                                <% } %>
+                                <% for (let i = 0; i < 5 - book.rating; i++ ){ %>
+                                    <span class="fa fa-star"></span>
+                                <% } %>
+                            </p>
+                            <%#-- END RATING --%>
+                        </div>
+                        <%#-- END BOOKS INFO --%>
+                    </div>
+                <%#-- END BOOKS SECTION --%>
+
+                <hr>
+                <% }); %>
+            <% } else { %>
+                <h1 class="text-center">Add new book review</h1>
+                <%- include("partials/createForm.ejs") %>
+            <% } %>
         </section>
     </main>
     <!-- END MAIN -->

@@ -46,7 +46,15 @@ app.post("/sort", (req, res) => {
         order = "ASC";
     }
     res.redirect("/");
-})
+});
+
+app.get("/create", (req, res) => {
+    res.render("index.ejs");
+});
+
+app.post("/store", (req, res) => {
+    res.redirect("/create");
+});
 // END routes -->
 
 // Setup server
