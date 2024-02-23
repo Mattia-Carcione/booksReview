@@ -48,37 +48,44 @@
                 <!-- END SORT SECTION -->
             </div>
 
-            <div class="row">
-                <!-- BOOK'S IMG -->
-                <div class="col-12 col-md-4 mt-5 p-md-0 d-flex justify-content-center justify-content-md-start">
-                    <img src="" class="img-fluid w-md-100" alt="book's image" height="200" width="200">
+            <!-- BOOKS SECTION -->
+            <% locals.books.forEach(book => { %>
+                <div class="row">
+                    
+                    <%#-- BOOK'S IMG --%>
+                    <div class="col-12 col-md-4 mt-5 p-md-0 d-flex justify-content-center justify-content-md-start">
+                        <img src="https://covers.openlibrary.org/b/isbn/<%=book.isbn%>-L.jpg" class="img-fluid w-md-100" alt="<%= book.title %>" height="200" width="200">
+                    </div>
+                    <%#-- END BOOK'S IMG --%>
+    
+                    <%#-- BOOKS INFO --%>
+                    <div class="col-12 col-md-8 mt-5 p-md-0">
+                        <h2 class="mb-3"><%= book.title %></h2>
+                        <h3 class="mb-3">
+                            <span class="info">Author:</span> <%= book.author %>
+                        </h3>
+                        <h4 class="mb-2 info">Review:</h4>
+                        <p>
+                            <%= book.review %>
+                        </p>
+    
+                        <%#-- RATING --%>
+                        <p>
+                            <% for (let i = 0; i < book.rating; i++ ){ %>
+                            <span class="fa fa-star" style="color: orange;"></span>
+                            <% } %>
+                            <% for (let i = 0; i < 5 - book.rating; i++ ){ %>
+                                <span class="fa fa-star"></span>
+                            <% } %>
+                        </p>
+                        <%#-- END RATING --%>
+                    </div>
+                    <%#-- END BOOKS INFO --%>
                 </div>
-                <!-- END BOOK'S IMG -->
+            <%#-- END BOOKS SECTION --%>
 
-                <!-- BOOKS SECTION -->
-                <div class="col-12 col-md-8 mt-5 p-md-0">
-                    <h2 class="mb-3">TITLE</h2>
-                    <h3 class="mb-3">Author: </h3>
-                    <h4 class="mb-2">Review</h4>
-                    <p>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus quod ullam doloribus
-                        delectus laboriosam magnam fugiat. Veniam eveniet inventore earum doloremque velit iusto
-                        quasi autem! Doloremque ab saepe mollitia ut?
-                    </p>
-
-                    <!-- RATING -->
-                    <p>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                    </p>
-                    <!-- END RATING -->
-                </div>
-                <!-- END BOOKS SECTION -->
-            </div>
             <hr>
+            <% }); %>
         </section>
     </main>
     <!-- END MAIN -->

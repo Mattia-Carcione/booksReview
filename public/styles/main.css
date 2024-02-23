@@ -11,3 +11,8 @@ body{
 header, footer{
     background-color: rgb(0, 162, 130);
 }
+
+/* CSS MAIN */
+.info{
+    color: rgb(0, 162, 130);
+}
