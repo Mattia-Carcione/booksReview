@@ -80,6 +80,17 @@ app.put("/edit", async (req, res) => {
         console.log(error);
     }
 });
+
+app.delete("/delete/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        await db.query("DELETE FROM books WHERE id = $1", [id]);
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
 // END routes -->
 
 // Setup server
