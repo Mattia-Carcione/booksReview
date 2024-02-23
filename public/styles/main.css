@@ -1,0 +1,13 @@
+/* GLOBAL CSS */
+body{
+    background-color: rgb(222, 231, 231);
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* CSS HEADER & FOOTER */
+header, footer{
+    background-color: rgb(0, 162, 130);
+}
