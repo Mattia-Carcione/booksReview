@@ -52,8 +52,18 @@ app.get("/create", (req, res) => {
     res.render("index.ejs");
 });
 
-app.post("/store", (req, res) => {
-    res.redirect("/create");
+app.post("/store", async (req, res) => {
+    const title = req.body.title;
+    const author = req.body.author;
+    const review = req.body.review;
+    const rating = req.body.rating;
+    const isbn = req.body.isbn;
+    try {
+        db.query("INSERT INTO books (title, author, review, rating, isbn) VALUES ($1, $2, $3, $4, $5)", [title, author, review, rating, isbn]);
+        res.redirect("/");
+    } catch (error) {
+        console.log(error);
+    }
 });
 // END routes -->
 
