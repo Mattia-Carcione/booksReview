@@ -21,13 +21,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 // END setup-->
 
-let sort = "id";
+let sortBy = "id";
+let order = "DESC";
 
 // <-- Routes
 app.get("/", async (req, res) => {
     let books = [];
     try {
-        const data = db.query(`SELECT * FROM books ORDER BY ${sort} ASC`);
+        const data = db.query(`SELECT * FROM books ORDER BY ${sortBy} ${order}`);
         (await data).rows.forEach((book) => {
             books.push(book);
         });
@@ -38,6 +39,14 @@ app.get("/", async (req, res) => {
         console.log(error);
     }
 });
+
+app.post("/sort", (req, res) => {
+    sortBy = req.body.sort;
+    if (sortBy === "title" || sortBy === "author") {
+        order = "ASC";
+    }
+    res.redirect("/");
+})
 // END routes -->
 
 // Setup server
