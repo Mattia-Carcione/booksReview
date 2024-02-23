@@ -21,10 +21,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 // END setup-->
 
+let sort = "id";
+
 // <-- Routes
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+    let books = [];
     try {
-        res.render("index.ejs");
+        const data = db.query(`SELECT * FROM books ORDER BY ${sort} ASC`);
+        (await data).rows.forEach((book) => {
+            books.push(book);
+        });
+        res.render("index.ejs", {
+            books: books
+        });
     } catch (error) {
         console.log(error);
     }
