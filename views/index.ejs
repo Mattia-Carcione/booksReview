@@ -61,7 +61,13 @@
         
                         <%#-- BOOKS INFO --%>
                         <div class="col-12 col-md-8 mt-5 p-md-0">
-                            <h2 class="mb-3"><%= book.title %></h2>
+                            <div class="d-flex align-items-center mb-3">
+                                <h2><%= book.title %></h2>
+                                <form action="/delete/<%=book.id%>" method="post">
+                                    <button type="submit" class="btn text-danger"><i class="fa-solid fa-trash-can"></i></button>
+                                </form>
+                            </div>
+
                             <h3 class="mb-3">
                                 <span class="info">Author:</span> <%= book.author %>
                             </h3>

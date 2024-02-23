@@ -81,11 +81,11 @@ app.put("/edit", async (req, res) => {
     }
 });
 
-app.delete("/delete/:id", async (req, res) => {
+app.post("/delete/:id", async (req, res) => {
     const id = req.params.id;
     try {
         await db.query("DELETE FROM books WHERE id = $1", [id]);
-        res.sendStatus(200);
+        res.redirect("/");
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
