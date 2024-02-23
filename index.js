@@ -28,7 +28,7 @@ let order = "DESC";
 app.get("/", async (req, res) => {
     let books = [];
     try {
-        const data = db.query(`SELECT * FROM books ORDER BY ${sortBy} ${order}`);
+        const data = await db.query(`SELECT * FROM books ORDER BY ${sortBy} ${order}`);
         (await data).rows.forEach((book) => {
             books.push(book);
         });
@@ -59,7 +59,22 @@ app.post("/store", async (req, res) => {
     const rating = req.body.rating;
     const isbn = req.body.isbn;
     try {
-        db.query("INSERT INTO books (title, author, review, rating, isbn) VALUES ($1, $2, $3, $4, $5)", [title, author, review, rating, isbn]);
+        await db.query("INSERT INTO books (title, author, review, rating, isbn) VALUES ($1, $2, $3, $4, $5)", [title, author, review, rating, isbn]);
+        res.redirect("/");
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.put("/edit", async (req, res) => {
+    const id = req.body.id;
+    const title = req.body.title;
+    const author = req.body.author;
+    const review = req.body.review;
+    const rating = req.body.rating;
+    const isbn = req.body.isbn;
+    try {
+        await db.query("UPDATE books SET title = $1, author = $2, review = $3, rating = $4, isbn = $5 WHERE id = $6", [title, author, review, rating, isbn, id]);
         res.redirect("/");
     } catch (error) {
         console.log(error);
