@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let timeoutId;
 
     input.addEventListener("input", async () => {
-        console.log("data");
         clearTimeout(timeoutId);
 
         const searchTerm = input.value;
@@ -23,10 +22,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: `searchInput=${encodeURIComponent(searchTerm)}`
             });
             const data = await response.json();
-            list.style.display = "inline-block";
-            data.forEach(item => {
-                list.innerHTML = `<li class="dropdown-item"><a class="nav-link" href="/search/${item.title}">${item.title}</a></li>`;
-            });
+            let html = '';
+            if (data.length !== 0) {
+                list.style.display = "inline-block";
+                data.forEach(item => {
+                    html += `<li class="dropdown-item"><a class="nav-link" href="/search/${item.title}">${item.title}</a></li>`;
+                });
+                list.innerHTML = html;
+            }
         }, 500); // Ritardo di 500 ms
     });
 

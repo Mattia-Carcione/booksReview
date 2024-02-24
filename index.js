@@ -112,11 +112,9 @@ app.post("/sort", (req, res) => {
 
 app.post("/search", async (req, res) => {
     const searchTerm = req.body.searchInput;
-    console.log("data");
     if (searchTerm) {
         try {
-            const data = await db.query("SELECT * FROM books WHERE title ILIKE $1 OR author ILIKE $1 OR isbn ILIKE $1", [searchTerm + '%']);
-            console.log(data.rows);
+            const data = await db.query("SELECT * FROM books WHERE title ILIKE $1 OR author ILIKE $1 OR isbn ILIKE $1 LIMIT 10", ['%' + searchTerm + '%']);
             res.json(data.rows);
         } catch (error) {
             console.error(error);
