@@ -24,7 +24,7 @@ app.use(express.static("public"));
 let sortBy = "id";
 let order = "DESC";
 
-// <-- Routes
+// <-- RESTful API
 app.get("/", async (req, res) => {
     let books = [];
     try {
@@ -36,16 +36,8 @@ app.get("/", async (req, res) => {
             books: books
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
-});
-
-app.post("/sort", (req, res) => {
-    sortBy = req.body.sort;
-    if (sortBy === "title" || sortBy === "author") {
-        order = "ASC";
-    }
-    res.redirect("/");
 });
 
 app.get("/create", (req, res) => {
@@ -53,16 +45,6 @@ app.get("/create", (req, res) => {
         action: "store"
     });
 });
-
-app.get("/edit/:id", async (req, res) => {
-    const id = req.params.id;
-    const data = await db.query(`SELECT * FROM books WHERE id = $1`, [id]);
-    const book = data.rows[0];
-    res.render("index.ejs", {
-        book: book,
-        action: `update/${id}`
-    });
-})
 
 app.post("/store", async (req, res) => {
     const title = req.body.title;
@@ -74,7 +56,21 @@ app.post("/store", async (req, res) => {
         await db.query("INSERT INTO books (title, author, review, rating, isbn) VALUES ($1, $2, $3, $4, $5)", [title, author, review, rating, isbn]);
         res.redirect("/");
     } catch (error) {
-        console.log(error);
+        console.error(error);
+    }
+});
+
+app.get("/edit/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const data = await db.query(`SELECT * FROM books WHERE id = $1`, [id]);
+        const book = data.rows[0];
+        res.render("index.ejs", {
+            book: book,
+            action: `update/${id}`
+        });
+    } catch (error) {
+        console.error(error);
     }
 });
 
@@ -103,7 +99,50 @@ app.post("/delete/:id", async (req, res) => {
         res.sendStatus(500);
     }
 });
-// END routes -->
+// END RESTful API -->
+
+// <-- ROUTES
+app.post("/sort", (req, res) => {
+    sortBy = req.body.sort;
+    if (sortBy === "title" || sortBy === "author") {
+        order = "ASC";
+    }
+    res.redirect("/");
+});
+
+app.post("/search", async (req, res) => {
+    const searchTerm = req.body.searchInput;
+    console.log("data");
+    if (searchTerm) {
+        try {
+            const data = await db.query("SELECT * FROM books WHERE title ILIKE $1 OR author ILIKE $1 OR isbn ILIKE $1", [searchTerm + '%']);
+            console.log(data.rows);
+            res.json(data.rows);
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        res.status(404).send("Page not found");
+    }
+});
+
+app.get("/search/:title", async (req, res) => {
+    const title = req.params.title;
+    try {
+        let books = [];
+        const data = db.query("SELECT * FROM books WHERE title = $1", [title]);
+        (await data).rows.forEach((book) => {
+            books.push(book);
+        });
+        res.render("index.ejs", {
+            books: books
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(404).send("Page Not Found");
+    }
+})
+// END ROUTES -->
 
 // Setup server
 app.listen(port, () => {
