@@ -22,13 +22,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: `searchInput=${encodeURIComponent(searchTerm)}`
             });
             const data = await response.json();
-            let html = '';
             if (data.length !== 0) {
+                let html = '';
                 list.style.display = "inline-block";
                 data.forEach(item => {
                     html += `<li class="dropdown-item"><a class="nav-link" href="/search/${item.title}">${item.title}</a></li>`;
                 });
                 list.innerHTML = html;
+            } else {
+                list.style.display = "none";
             }
         }, 500); // Ritardo di 500 ms
     });
