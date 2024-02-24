@@ -1,26 +1,30 @@
-<form action="/store" method="post" class="row g-3 min-vh-100 py-3">
+<form action="/<%=locals.action%>" method="post" class="row g-3 min-vh-100 py-3">
     <div class="col-md-6">
         <label for="inputAuthor" class="form-label">Title</label>
-        <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Title here">
+        <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Title here" value="<%= locals.book ? locals.book.title : '' %>">
     </div>
     <div class="col-md-6">
         <label for="inputAuthor" class="form-label">Author</label>
-        <input type="text" class="form-control" id="inputAuthor" name="author" placeholder="Author here">
+        <input type="text" class="form-control" id="inputAuthor" name="author" placeholder="Author here" value="<%=locals.book ? locals.book.author : '' %>">
     </div>
     <div class="col-12">
         <label for="inputReview" class="form-label">Review <span class="fw-light">(Max: 500)</span></label>
         <textarea maxlength="500" class="form-control" id="inputReview" name="review"
-            placeholder="Insert your review here"></textarea>
+            placeholder="Insert your review here"><%=locals.book ? locals.book.review : '' %></textarea>
     </div>
     <div class="col-md-6">
         <label for="inputISBN" class="form-label">ISBN <span class="fw-light">(13 Character)</span></label>
-        <input type="number" maxlength="13" class="form-control" id="inputISBN" name="isbn" placeholder="1234567891234">
+        <input type="number" maxlength="13" class="form-control" id="inputISBN" name="isbn" placeholder="1234567891234" value="<%=locals.book ? locals.book.isbn : ''%>">
     </div>
     <div class="col-md-6">
         <label for="inputRating" class="form-label">Rating <span class="fw-light">1-5</span></label>
-        <input type="number" class="form-control" id="inputRating" min="1" max="5" name="rating" placeholder="1-5">
+        <input type="number" class="form-control" id="inputRating" min="1" max="5" name="rating" placeholder="1-5" value="<%=locals.book ? locals.book.rating : ''%>">
     </div>
     <div class="col-12">
+        <% if(locals.book) { %>
+        <button type="submit" class="btn btn-outline-success">Update</button>
+        <% } else { %>
         <button type="submit" class="btn btn-outline-success">Add Book</button>
+        <% } %>
     </div>
 </form>

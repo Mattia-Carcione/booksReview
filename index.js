@@ -29,7 +29,7 @@ app.get("/", async (req, res) => {
     let books = [];
     try {
         const data = await db.query(`SELECT * FROM books ORDER BY ${sortBy} ${order}`);
-        (await data).rows.forEach((book) => {
+        (data).rows.forEach((book) => {
             books.push(book);
         });
         res.render("index.ejs", {
@@ -49,8 +49,20 @@ app.post("/sort", (req, res) => {
 });
 
 app.get("/create", (req, res) => {
-    res.render("index.ejs");
+    res.render("index.ejs", {
+        action: "store"
+    });
 });
+
+app.get("/edit/:id", async (req, res) => {
+    const id = req.params.id;
+    const data = await db.query(`SELECT * FROM books WHERE id = $1`, [id]);
+    const book = data.rows[0];
+    res.render("index.ejs", {
+        book: book,
+        action: `update/${id}`
+    });
+})
 
 app.post("/store", async (req, res) => {
     const title = req.body.title;
@@ -66,8 +78,8 @@ app.post("/store", async (req, res) => {
     }
 });
 
-app.put("/edit", async (req, res) => {
-    const id = req.body.id;
+app.post("/update/:id", async (req, res) => {
+    const id = req.params.id;
     const title = req.body.title;
     const author = req.body.author;
     const review = req.body.review;
