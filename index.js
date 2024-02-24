@@ -106,6 +106,8 @@ app.post("/sort", (req, res) => {
     sortBy = req.body.sort;
     if (sortBy === "title" || sortBy === "author") {
         order = "ASC";
+    } else {
+        order = "DESC";
     }
     res.redirect("/");
 });
